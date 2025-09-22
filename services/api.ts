@@ -56,9 +56,6 @@ const api = {
   register: (data: RegisterIn) => api.request<UserOut>('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
   login: (data: LoginIn) => api.request<TokenOut>('/auth/login', { method: 'POST', body: JSON.stringify(data) }),
   
-  // Assuming a /users/me endpoint to get current user info
-  getCurrentUser: () => api.request<UserOut>('/users/me'),
-
   // Projects
   getProjects: () => api.request<ProjectOut[]>('/projects'),
   createProject: (data: ProjectCreate) => api.request<ProjectOut>('/projects', { method: 'POST', body: JSON.stringify(data) }),
