@@ -1,5 +1,4 @@
-
-import { LoginIn, RegisterIn, TokenOut, UserOut, ProjectCreate, ProjectOut, InputsCreate, InputsOut, CalcResultOut } from '../types';
+import { LoginIn, RegisterIn, TokenOut, UserOut, ProjectCreate, ProjectOut, InputsCreate, InputsOut, CalcResultOut, HTTPValidationError } from '../types';
 
 const API_BASE_URL = 'http://localhost:8000'; // This should be configured via environment variables
 
@@ -26,10 +25,22 @@ const api = {
     try {
         const response = await fetch(url, config);
         if (!response.ok) {
-            // Handle HTTP errors
-            const errorData = await response.json().catch(() => ({ message: 'An unknown error occurred' }));
+            const errorData = await response.json().catch(() => ({}));
             console.error('API Error:', response.status, errorData);
-            throw new Error(errorData.detail?.[0]?.msg || errorData.message || `HTTP error! status: ${response.status}`);
+            
+            let errorMessage = `HTTP error! status: ${response.status}`; // Default message
+            
+            if (errorData.detail && typeof errorData.detail === 'string') {
+                // Handle simple string detail messages
+                errorMessage = errorData.detail;
+            } else if (errorData.detail && Array.isArray(errorData.detail)) {
+                // Handle validation errors (HTTPValidationError)
+                errorMessage = errorData.detail.map((e: any) => e.msg || 'A validation error occurred').join(', ');
+            } else if (errorData.message) {
+                errorMessage = errorData.message;
+            }
+
+            throw new Error(errorMessage);
         }
         if (response.status === 204 || response.headers.get('content-length') === '0') {
             return null as T;

@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, StatCard, Button, Skeleton } from '../components/ui';
 import { CalcResultOut } from '../types';
@@ -34,6 +33,7 @@ const financialData = financials ? [
 // Main Page Component
 const ProjectDetailPage: React.FC = () => {
     const { projectId } = useParams<{ projectId: string }>();
+    const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<Tab>('overview');
     // In a real app, you'd fetch project data based on projectId
     const project = MOCK_PROJECT; 
@@ -60,12 +60,18 @@ const ProjectDetailPage: React.FC = () => {
 
     return (
         <div>
-            <div className="mb-4">
-                <h1 className="text-2xl font-bold">{project.name}</h1>
-                <p className="text-sm text-gray-500">Status: {project.status} | Last updated: {new Date(project.updated_at).toLocaleString()}</p>
+            <div className="flex items-start gap-4 mb-4">
+                <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="mt-1 flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+                    <span className="ml-2 hidden sm:inline">Back</span>
+                </Button>
+                <div>
+                    <h1 className="text-2xl font-bold">{project.name}</h1>
+                    <p className="text-sm text-gray-500">Status: {project.status} | Last updated: {new Date(project.updated_at).toLocaleString()}</p>
+                </div>
             </div>
             <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
-                <nav className="-mb-px flex space-x-4" aria-label="Tabs">
+                <nav className="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
                     <TabButton tab="overview" label="Overview" />
                     <TabButton tab="inputs" label="Inputs" />
                     <TabButton tab="calculations" label="Calculations" />

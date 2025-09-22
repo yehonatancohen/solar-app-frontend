@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useRef, useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useAuth, useTheme } from '../contexts/AppContext';
 import { Button, SunIcon, MoonIcon, BellIcon, UserCircleIcon } from './ui';
@@ -10,11 +10,30 @@ const HelpIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" classNa
 const MenuIcon: React.FC = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>;
 
 // --- Header ---
-// FIX: Destructured onMenuClick from props to make it available in the component.
 const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
     const { theme, toggleTheme } = useTheme();
     const { user, logout } = useAuth();
-    const [isMenuOpen, setMenuOpen] = useState(false);
+    const [isUserMenuOpen, setUserMenuOpen] = useState(false);
+    const [isNotificationsOpen, setNotificationsOpen] = useState(false);
+
+    const userMenuRef = useRef<HTMLDivElement>(null);
+    const notificationsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+                setUserMenuOpen(false);
+            }
+            if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+                setNotificationsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-30">
@@ -33,15 +52,41 @@ const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
                         <button onClick={toggleTheme} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
                             {theme === 'light' ? <MoonIcon className="h-6 w-6" /> : <SunIcon className="h-6 w-6" />}
                         </button>
-                        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 relative">
-                            <BellIcon className="h-6 w-6" />
-                            <span className="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-gray-800"></span>
-                        </button>
-                        <div className="relative">
-                            <button onClick={() => setMenuOpen(!isMenuOpen)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        
+                        <div className="relative" ref={notificationsRef}>
+                            <button onClick={() => setNotificationsOpen(prev => !prev)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 relative">
+                                <BellIcon className="h-6 w-6" />
+                                <span className="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-gray-800"></span>
+                            </button>
+                            {isNotificationsOpen && (
+                                <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="p-4 border-b dark:border-gray-600">
+                                        <h3 className="font-semibold text-gray-800 dark:text-gray-100">Notifications</h3>
+                                    </div>
+                                    <ul className="py-1 divide-y divide-gray-100 dark:divide-gray-600">
+                                        <li className="p-4 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <p className="text-sm font-medium">Calculation complete for 'Downtown Rooftop'</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">5 minutes ago</p>
+                                        </li>
+                                        <li className="p-4 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <p className="text-sm">Quote #Q2023-015 for 'Suburban Residence' expires in 3 days.</p>
+                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">1 hour ago</p>
+                                        </li>
+                                    </ul>
+                                    <div className="p-2 border-t dark:border-gray-600">
+                                        <Link to="/notifications" className="block text-center text-sm font-medium text-primary-600 hover:text-primary-500">
+                                            View all notifications
+                                        </Link>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="relative" ref={userMenuRef}>
+                            <button onClick={() => setUserMenuOpen(prev => !prev)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
                                 <UserCircleIcon className="h-6 w-6" />
                             </button>
-                            {isMenuOpen && (
+                            {isUserMenuOpen && (
                                 <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
                                     <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
                                         <p className="font-semibold">{user?.name}</p>

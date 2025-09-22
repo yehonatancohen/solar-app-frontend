@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import api from '../services/api';
 import { UserOut, LoginIn, RegisterIn } from '../types';
@@ -62,13 +61,8 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         const token = localStorage.getItem('authToken');
         if (token) {
             try {
-                // To properly implement this, we need an endpoint like /users/me
-                // For now, we'll decode the token or assume it's valid if present
-                // This is a simplified example. In a real app, you'd call an endpoint to validate the token and get user data.
-                // const userData = await api.getCurrentUser();
-                // setUser(userData);
-                // For demonstration purposes, we'll set a mock user if a token exists
-                 setUser({ id: 1, name: 'Demo User', email: 'user@example.com', role: 'User', is_active: true });
+                const userData = await api.getCurrentUser();
+                setUser(userData);
             } catch (e) {
                 console.error("Auth verification failed", e);
                 localStorage.removeItem('authToken');
@@ -84,12 +78,14 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
     const login = async (credentials: LoginIn) => {
         setError(null);
+        setIsLoading(true);
         try {
             const { access_token } = await api.login(credentials);
             localStorage.setItem('authToken', access_token);
             await verifyAuth();
         } catch (err: any) {
             setError(err.message || 'Login failed.');
+            setIsLoading(false);
             throw err;
         }
     };
@@ -98,7 +94,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setError(null);
         try {
             await api.register(data);
-            // Optionally auto-login after registration
+            // Auto-login after registration
             await login({ email: data.email, password: data.password });
         } catch (err: any) {
             setError(err.message || 'Registration failed.');
