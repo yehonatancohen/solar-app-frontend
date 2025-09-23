@@ -1,9 +1,16 @@
+// From components.schemas.PaymentInfo
+export interface PaymentInfo {
+  method: 'visa' | 'mobile_money';
+  card_number?: string | null;
+  phone_number?: string | null;
+}
 
 // From components.schemas.RegisterIn
 export interface RegisterIn {
   name: string;
   email: string;
   password: string;
+  payment: PaymentInfo;
 }
 
 // From components.schemas.LoginIn
@@ -80,6 +87,20 @@ export interface CalcResultOut {
   notes?: string;
 }
 
+// From components.schemas.SocialLinkCreate
+export interface SocialLinkCreate {
+    platform: string;
+    handle: string;
+}
+
+// From components.schemas.SocialLinkOut
+export interface SocialLinkOut {
+    id: number;
+    platform: string;
+    handle: string;
+}
+
+
 // From components.schemas.ValidationError
 export interface ValidationError {
   loc: (string | number)[];
@@ -90,4 +111,9 @@ export interface ValidationError {
 // From components.schemas.HTTPValidationError
 export interface HTTPValidationError {
   detail?: ValidationError[];
+}
+
+// From components.schemas.PaymentCheckoutIn
+export interface PaymentCheckoutIn {
+    provider: 'stripe' | 'mobile';
 }

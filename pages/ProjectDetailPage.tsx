@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, StatCard, Button, Skeleton } from '../components/ui';
 import { CalcResultOut } from '../types';
+import { useTheme } from '../contexts/AppContext';
 
 type Tab = 'overview' | 'inputs' | 'calculations' | 'quotes' | 'planner';
 
@@ -52,7 +53,7 @@ const ProjectDetailPage: React.FC = () => {
     const TabButton: React.FC<{tab: Tab, label: string}> = ({ tab, label }) => (
         <button
             onClick={() => setActiveTab(tab)}
-            className={`px-3 py-2 font-medium text-sm rounded-md ${activeTab === tab ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/50 dark:text-primary-300' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}`}
+            className={`px-3 py-2 font-medium text-sm rounded-md ${activeTab === tab ? 'bg-[var(--color-primary-subtle-bg)] text-[var(--color-primary-subtle-text)]' : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'}`}
         >
             {label}
         </button>
@@ -67,10 +68,10 @@ const ProjectDetailPage: React.FC = () => {
                 </Button>
                 <div>
                     <h1 className="text-2xl font-bold">{project.name}</h1>
-                    <p className="text-sm text-gray-500">Status: {project.status} | Last updated: {new Date(project.updated_at).toLocaleString()}</p>
+                    <p className="text-sm text-[var(--color-text-secondary)]">Status: {project.status} | Last updated: {new Date(project.updated_at).toLocaleString()}</p>
                 </div>
             </div>
-            <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
+            <div className="border-b border-[var(--color-border)] mb-6">
                 <nav className="-mb-px flex space-x-4 overflow-x-auto" aria-label="Tabs">
                     <TabButton tab="overview" label="Overview" />
                     <TabButton tab="inputs" label="Inputs" />
@@ -98,9 +99,9 @@ const OverviewTab: React.FC = () => (
             <CardHeader><h3 className="text-lg font-medium">Activity Feed</h3></CardHeader>
             <CardContent>
                 <ul className="space-y-2">
-                    <li className="text-sm">Calculation v3 run - <span className="text-gray-500">2 hours ago</span></li>
-                    <li className="text-sm">Inputs saved - <span className="text-gray-500">3 hours ago</span></li>
-                    <li className="text-sm">Quote #Q23-01 sent - <span className="text-gray-500">1 day ago</span></li>
+                    <li className="text-sm">Calculation v3 run - <span className="text-[var(--color-text-secondary)]">2 hours ago</span></li>
+                    <li className="text-sm">Inputs saved - <span className="text-[var(--color-text-secondary)]">3 hours ago</span></li>
+                    <li className="text-sm">Quote #Q23-01 sent - <span className="text-[var(--color-text-secondary)]">1 day ago</span></li>
                 </ul>
             </CardContent>
         </Card>
@@ -111,15 +112,24 @@ const InputsTab: React.FC = () => (
     <Card>
         <CardHeader><h3 className="text-lg font-medium">Project Inputs</h3></CardHeader>
         <CardContent>
-            <p className="text-center py-8 text-gray-500">Input form sections (Site, Demand, PV, Financials) would be displayed here.</p>
+            <p className="text-center py-8 text-[var(--color-text-secondary)]">Input form sections (Site, Demand, PV, Financials) would be displayed here.</p>
         </CardContent>
-        <CardContent className="border-t dark:border-gray-700">
+        <CardContent className="border-t border-[var(--color-border)]">
              <Button>Save Inputs</Button>
         </CardContent>
     </Card>
 );
 
-const CalculationsTab: React.FC = () => (
+const CalculationsTab: React.FC = () => {
+    const { theme } = useTheme();
+    const tooltipStyle = theme === 'dark' 
+        ? { backgroundColor: '#374151', border: '1px solid #4b5563', color: '#f9fafb' } 
+        : { backgroundColor: 'rgba(255, 255, 255, 0.9)', border: '1px solid #e5e7eb' };
+    const axisColor = theme === 'dark' ? '#9ca3af' : '#6b7280';
+    const gridColor = theme === 'dark' ? 'rgba(107, 114, 128, 0.2)' : 'rgba(209, 213, 219, 0.4)';
+
+
+    return (
      <div className="space-y-6">
         <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Calculation Results</h2>
@@ -136,19 +146,14 @@ const CalculationsTab: React.FC = () => (
                 <div style={{ width: '100%', height: 300 }}>
                     <ResponsiveContainer>
                         <BarChart data={yieldData}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} className="stroke-gray-200 dark:stroke-gray-700" />
-                            <XAxis dataKey="name" className="text-xs" />
-                            <YAxis unit=" kWh" className="text-xs" />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={gridColor} />
+                            <XAxis dataKey="name" className="text-xs" stroke={axisColor} />
+                            <YAxis unit=" kWh" className="text-xs" stroke={axisColor} />
                             <Tooltip
-                                contentStyle={{
-                                    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                                    backdropFilter: 'blur(5px)',
-                                    border: '1px solid #ccc',
-                                    borderRadius: '0.5rem',
-                                }}
-                                wrapperClassName="dark:text-black"
+                                contentStyle={tooltipStyle}
+                                cursor={{ fill: 'rgba(107, 114, 128, 0.1)' }}
                             />
-                            <Legend />
+                            <Legend wrapperStyle={{ color: axisColor }} />
                             <Bar dataKey="kWh" fill="#3b82f6" name="Energy Yield"/>
                         </BarChart>
                     </ResponsiveContainer>
@@ -161,10 +166,10 @@ const CalculationsTab: React.FC = () => (
                  <div style={{ width: '100%', height: 300 }}>
                     <ResponsiveContainer>
                         <BarChart data={financialData} layout="vertical">
-                            <CartesianGrid strokeDasharray="3 3" horizontal={false} className="stroke-gray-200 dark:stroke-gray-700" />
-                            <XAxis type="number" unit="$" className="text-xs"/>
-                            <YAxis type="category" dataKey="name" width={100} className="text-xs"/>
-                            <Tooltip formatter={(value: number) => value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} />
+                            <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke={gridColor} />
+                            <XAxis type="number" unit="$" className="text-xs" stroke={axisColor} />
+                            <YAxis type="category" dataKey="name" width={100} className="text-xs" stroke={axisColor} />
+                            <Tooltip formatter={(value: number) => value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })} contentStyle={tooltipStyle} cursor={{ fill: 'rgba(107, 114, 128, 0.1)' }} />
                             <Bar dataKey="value" fill="#8884d8" />
                         </BarChart>
                     </ResponsiveContainer>
@@ -172,7 +177,8 @@ const CalculationsTab: React.FC = () => (
             </CardContent>
         </Card>
      </div>
-);
+    );
+};
 
 const QuotesTab: React.FC = () => (
      <Card>
@@ -183,7 +189,7 @@ const QuotesTab: React.FC = () => (
             </div>
         </CardHeader>
         <CardContent>
-            <p className="text-center py-8 text-gray-500">A list of generated quotes would appear here.</p>
+            <p className="text-center py-8 text-[var(--color-text-secondary)]">A list of generated quotes would appear here.</p>
         </CardContent>
     </Card>
 );
@@ -192,7 +198,7 @@ const InstallPlannerTab: React.FC = () => (
      <Card>
         <CardHeader><h3 className="text-lg font-medium">Installation Planner</h3></CardHeader>
         <CardContent>
-            <p className="text-center py-8 text-gray-500">List, Kanban, or Calendar view for installation tasks would be here.</p>
+            <p className="text-center py-8 text-[var(--color-text-secondary)]">List, Kanban, or Calendar view for installation tasks would be here.</p>
         </CardContent>
     </Card>
 );

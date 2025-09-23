@@ -2,41 +2,6 @@ import React, { createContext, useState, useEffect, useContext, useCallback } fr
 import api from '../services/api';
 import { UserOut, LoginIn, RegisterIn } from '../types';
 
-// --- JWT Decoding ---
-/**
- * Decodes a JWT token to extract its payload without verifying the signature.
- * @param token The JWT token string.
- * @returns The decoded payload object or null if decoding fails.
- */
-function decodeJwt<T>(token: string): T | null {
-  try {
-    const base64Url = token.split('.')[1];
-    if (!base64Url) return null;
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload) as T;
-  } catch (error) {
-    console.error('Invalid token:', error);
-    return null;
-  }
-}
-
-// Expected payload from the JWT from the backend
-interface JwtPayload {
-    sub: string; // User ID
-    name: string;
-    email: string;
-    role: string;
-    is_active: boolean;
-    exp?: number; // Expiration time
-}
-
-
 // --- Theme Context ---
 type Theme = 'light' | 'dark';
 interface ThemeContextType {
@@ -92,22 +57,17 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    const verifyAuth = useCallback(() => {
+    const verifyAuth = useCallback(async () => {
         setIsLoading(true);
         const token = localStorage.getItem('authToken');
         if (token) {
-            const payload = decodeJwt<JwtPayload>(token);
-            // Check if token is valid and not expired
-            if (payload && payload.exp && payload.exp * 1000 > Date.now()) {
-                const userData: UserOut = {
-                    id: parseInt(payload.sub, 10),
-                    name: payload.name,
-                    email: payload.email,
-                    role: payload.role,
-                    is_active: payload.is_active,
-                };
+            try {
+                // Use the /auth/me endpoint to verify token and get fresh user data
+                const userData = await api.getMe();
                 setUser(userData);
-            } else {
+            } catch (err) {
+                // If token is invalid or expired, clear it
+                console.error("Token verification failed:", err);
                 localStorage.removeItem('authToken');
                 setUser(null);
             }
@@ -123,24 +83,10 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setError(null);
         try {
             const { access_token } = await api.login(credentials);
-            const payload = decodeJwt<JwtPayload>(access_token);
-
-            if (payload) {
-                if (payload.exp && payload.exp * 1000 < Date.now()) {
-                    throw new Error("Login failed: Expired token received.");
-                }
-                localStorage.setItem('authToken', access_token);
-                const userData: UserOut = {
-                    id: parseInt(payload.sub, 10),
-                    name: payload.name,
-                    email: payload.email,
-                    role: payload.role,
-                    is_active: payload.is_active,
-                };
-                setUser(userData);
-            } else {
-                 throw new Error("Login failed: Could not decode or invalid token received.");
-            }
+            localStorage.setItem('authToken', access_token);
+            // After login, fetch the user's data from the /auth/me endpoint
+            const userData = await api.getMe();
+            setUser(userData);
         } catch (err: any) {
             setError(err.message || 'Login failed.');
             localStorage.removeItem('authToken');
@@ -153,7 +99,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         setError(null);
         try {
             await api.register(data);
-            // Auto-login after successful registration to get the token
+            // Auto-login after successful registration to get the token and user data
             await login({ email: data.email, password: data.password });
         } catch (err: any) {
             setError(err.message || 'Registration failed.');

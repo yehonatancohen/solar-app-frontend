@@ -1,3 +1,4 @@
+
 import React, { useContext, useEffect } from 'react';
 import { HashRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AppContextProvider, useAuth, useTheme } from './contexts/AppContext';
@@ -5,6 +6,7 @@ import AuthPage from './pages/AuthPage';
 import DashboardPage from './pages/DashboardPage';
 import ProjectsListPage from './pages/ProjectsListPage';
 import ProjectDetailPage from './pages/ProjectDetailPage';
+import ProfilePage from './pages/ProfilePage';
 import { PaywallPage, HelpPage, NotificationsPage, NotFoundPage } from './pages/ExtraPages';
 import { Layout } from './components/Layout';
 import { Spinner } from './components/ui';
@@ -75,6 +77,7 @@ const MainRouter: React.FC = () => {
                 <Route path="/" element={<DashboardPage />} />
                 <Route path="/projects" element={<ProjectsListPage />} />
                 <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+                <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
                 <Route path="/help" element={<HelpPage />} />
                 {/* Redirect any attempts to access auth or paywall pages to the dashboard */}

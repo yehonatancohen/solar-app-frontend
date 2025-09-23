@@ -1,6 +1,6 @@
-import { LoginIn, RegisterIn, TokenOut, UserOut, ProjectCreate, ProjectOut, InputsCreate, InputsOut, CalcResultOut, HTTPValidationError } from '../types';
+import { LoginIn, RegisterIn, TokenOut, UserOut, ProjectCreate, ProjectOut, InputsCreate, InputsOut, CalcResultOut, HTTPValidationError, PaymentCheckoutIn, SocialLinkCreate, SocialLinkOut } from '../types';
 
-const API_BASE_URL = 'http://localhost:8000'; // This should be configured via environment variables
+const API_BASE_URL = 'https://solar-app-backend-production.up.railway.app'; // This should be configured via environment variables
 
 const getAuthToken = (): string | null => localStorage.getItem('authToken');
 
@@ -55,6 +55,7 @@ const api = {
   // Auth
   register: (data: RegisterIn) => api.request<UserOut>('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
   login: (data: LoginIn) => api.request<TokenOut>('/auth/login', { method: 'POST', body: JSON.stringify(data) }),
+  getMe: () => api.request<UserOut>('/auth/me'),
   
   // Projects
   getProjects: () => api.request<ProjectOut[]>('/projects'),
@@ -65,6 +66,13 @@ const api = {
 
   // Calculations
   runCalculation: (projectId: number) => api.request<CalcResultOut>(`/projects/${projectId}/calculate`, { method: 'POST' }),
+
+  // Payments
+  createCheckoutSession: (data: PaymentCheckoutIn) => api.request<Record<string, unknown>>('/payments/checkout', { method: 'POST', body: JSON.stringify(data) }),
+  
+  // Social Links
+  getSocialLinks: () => api.request<SocialLinkOut[]>('/users/me/social-links'),
+  createSocialLink: (data: SocialLinkCreate) => api.request<SocialLinkOut>('/users/me/social-links', { method: 'POST', body: JSON.stringify(data) }),
 };
 
 export default api;

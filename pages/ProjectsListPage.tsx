@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { ProjectOut } from '../types';
 import api from '../services/api';
@@ -40,9 +39,9 @@ const ProjectsListPage: React.FC = () => {
 
     const StatusBadge: React.FC<{status: string}> = ({status}) => {
         const statusMap: {[key: string]: string} = {
-            'Active': 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300',
-            'Draft': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-            'Archived': 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
+            'Active': 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300',
+            'Draft': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/50 dark:text-yellow-300',
+            'Archived': 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-300',
         };
         return <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusMap[status] || 'bg-gray-100 text-gray-800'}`}>{status}</span>;
     }
@@ -50,31 +49,30 @@ const ProjectsListPage: React.FC = () => {
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Projects</h1>
+                <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">Projects</h1>
                 <Link to="/projects/new"><Button variant="primary">New Project</Button></Link>
             </div>
             <Card>
                 <CardHeader>
                     <div className="flex justify-between items-center">
-                        <div className="w-1/3">
+                        <div className="w-full sm:w-1/3">
                              <Input id="search" label="" placeholder="Search projects..." type="search" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                         </div>
-                        {/* Filter dropdowns could go here */}
                     </div>
                 </CardHeader>
                 <CardContent className="p-0">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead className="bg-gray-50 dark:bg-gray-700">
+                        <table className="min-w-full divide-y divide-[var(--color-border)]">
+                            <thead className="bg-[var(--color-bg-primary)]">
                                 <tr>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Owner</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Last Updated</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Name</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Owner</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Status</th>
+                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-[var(--color-text-secondary)] uppercase tracking-wider">Last Updated</th>
                                     <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody className="bg-[var(--color-card-bg)] divide-y divide-[var(--color-border)]">
                                 {isLoading ? (
                                     Array.from({ length: 4 }).map((_, i) => (
                                         <tr key={i}>
@@ -87,10 +85,10 @@ const ProjectsListPage: React.FC = () => {
                                     ))
                                 ) : filteredProjects.map(project => (
                                     <tr key={project.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{project.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{project.owner}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-[var(--color-text-primary)]">{project.name}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-text-secondary)]">{project.owner}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm"><StatusBadge status={project.status} /></td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{new Date(project.updated_at || Date.now()).toLocaleDateString()}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-[var(--color-text-secondary)]">{new Date(project.updated_at || Date.now()).toLocaleDateString()}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <Link to={`/projects/${project.id}`}><Button size="sm">Open</Button></Link>
                                         </td>
@@ -101,7 +99,7 @@ const ProjectsListPage: React.FC = () => {
                         {!isLoading && filteredProjects.length === 0 && (
                             <div className="text-center py-12">
                                 <h3 className="text-lg font-medium">No projects found</h3>
-                                <p className="text-sm text-gray-500 mt-1">
+                                <p className="text-sm text-[var(--color-text-secondary)] mt-1">
                                     {searchTerm ? 'Try adjusting your search.' : 'Create your first project to get started.'}
                                 </p>
                             </div>

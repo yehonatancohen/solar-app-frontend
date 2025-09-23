@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AppContext';
 import { ProjectOut } from '../types';
@@ -37,7 +36,7 @@ const DashboardPage: React.FC = () => {
     return (
         <div>
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-2xl font-bold text-[var(--color-text-primary)]">
                     Welcome, {user?.name}!
                 </h1>
                 <Link to="/projects/new">
@@ -86,19 +85,19 @@ const RecentProjects: React.FC<{ projects: ProjectOut[], isLoading: boolean }> =
                     <Skeleton className="h-10" />
                 </div>
             ) : projects.length > 0 ? (
-                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                <ul className="divide-y divide-[var(--color-border)]">
                     {projects.slice(0, 5).map(p => (
                         <li key={p.id} className="py-3 flex justify-between items-center">
                             <div>
                                 <Link to={`/projects/${p.id}`} className="font-medium text-primary-600 hover:text-primary-500">{p.name}</Link>
-                                <p className="text-sm text-gray-500">{p.status}</p>
+                                <p className="text-sm text-[var(--color-text-secondary)]">{p.status}</p>
                             </div>
-                            <span className="text-sm text-gray-500">{new Date(p.updated_at || Date.now()).toLocaleDateString()}</span>
+                            <span className="text-sm text-[var(--color-text-secondary)]">{new Date(p.updated_at || Date.now()).toLocaleDateString()}</span>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p className="text-center text-gray-500 py-4">No projects yet.</p>
+                <p className="text-center text-[var(--color-text-secondary)] py-4">No projects yet.</p>
             )}
         </CardContent>
     </Card>
@@ -116,7 +115,7 @@ const ExpiringQuotes: React.FC<{ isLoading: boolean }> = ({ isLoading }) => (
                     <Skeleton className="h-10" />
                 </div>
             ) : (
-                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                <ul className="divide-y divide-[var(--color-border)]">
                     <li className="py-3 flex justify-between items-center">
                        <div>
                             <p className="font-medium">Quote #Q2023-015</p>

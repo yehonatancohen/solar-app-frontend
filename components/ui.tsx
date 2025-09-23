@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 // --- Icons ---
@@ -25,6 +24,29 @@ export const UserCircleIcon: React.FC<{ className?: string }> = ({ className }) 
     </svg>
 );
 
+export const FacebookIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className || 'w-6 h-6'} viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v7.028C18.343 21.128 22 16.991 22 12z" /></svg>
+);
+
+export const InstagramIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className || 'w-6 h-6'} viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.142 0-3.501.011-4.71.067-2.624.12-3.628 1.121-3.747 3.747-.056 1.207-.067 1.566-.067 4.71s.011 3.502.067 4.71c.12 2.625 1.122 3.627 3.747 3.747 1.207.055 1.566.067 4.71.067 3.142 0 3.501-.012 4.71-.067 2.624-.12 3.628-1.122 3.747-3.747.056-1.207.067-1.566.067-4.71s-.011-3.502-.067-4.71c-.12-2.625-1.122-3.627-3.747-3.747-1.207-.055-1.566-.067-4.71-.067zM12 7.272a4.728 4.728 0 100 9.455 4.728 4.728 0 000-9.455zm0 7.651a2.923 2.923 0 110-5.846 2.923 2.923 0 010 5.846zm4.65-8.086a1.107 1.107 0 100-2.214 1.107 1.107 0 000 2.214z"/></svg>
+);
+
+export const LinkedInIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className || 'w-6 h-6'} viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+);
+
+export const XIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className || 'w-6 h-6'} viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+);
+
+export const ArrowTopRightOnSquareIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className || 'w-6 h-6'}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+    </svg>
+);
+
+
 // --- Button ---
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
@@ -33,13 +55,13 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ variant = 'primary', size = 'md', isLoading = false, disabled, className, children, ...props }, ref) => {
-        const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200';
+        const baseStyles = 'inline-flex items-center justify-center font-semibold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[var(--color-bg-secondary)] disabled:opacity-50';
         
         const variantStyles = {
-            primary: 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 disabled:bg-primary-300 dark:disabled:bg-primary-800',
-            secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 focus:ring-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600',
+            primary: 'bg-[var(--color-primary)] text-[var(--color-primary-text)] hover:bg-[var(--color-primary-hover)] focus:ring-[var(--color-primary)]',
+            secondary: 'bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-border)] focus:ring-primary-500',
             danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
-            ghost: 'bg-transparent text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 focus:ring-primary-500',
+            ghost: 'bg-transparent text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-primary)] focus:ring-primary-500',
         };
 
         const sizeStyles = {
@@ -68,13 +90,13 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 export const Card: React.FC<CardProps> = ({ className, children, ...props }) => {
     return (
-        <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden ${className}`} {...props}>
+        <div className={`bg-[var(--color-card-bg)] rounded-lg shadow-md overflow-hidden ${className}`} {...props}>
             {children}
         </div>
     );
 };
 export const CardHeader: React.FC<CardProps> = ({ className, children, ...props }) => (
-    <div className={`p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 ${className}`} {...props}>
+    <div className={`p-4 sm:p-6 border-b border-[var(--color-border)] ${className}`} {...props}>
         {children}
     </div>
 );
@@ -84,7 +106,7 @@ export const CardContent: React.FC<CardProps> = ({ className, children, ...props
     </div>
 );
 export const CardFooter: React.FC<CardProps> = ({ className, children, ...props }) => (
-    <div className={`p-4 sm:p-6 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700 ${className}`} {...props}>
+    <div className={`p-4 sm:p-6 bg-[var(--color-bg-primary)] border-t border-[var(--color-border)] ${className}`} {...props}>
         {children}
     </div>
 );
@@ -93,17 +115,19 @@ export const CardFooter: React.FC<CardProps> = ({ className, children, ...props 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label: string;
     error?: string;
+    helpText?: string;
 }
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, id, error, className, ...props }, ref) => (
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, id, error, helpText, className, ...props }, ref) => (
     <div>
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{label}</label>
+        <label htmlFor={id} className="block text-sm font-medium text-[var(--color-text-secondary)] mb-1">{label}</label>
         <input
             id={id}
             ref={ref}
-            className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm ${error ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'} bg-white dark:bg-gray-700 ${className}`}
+            className={`block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm ${error ? 'border-red-500' : 'border-[var(--color-border-input)]'} bg-[var(--color-input-bg)] ${className}`}
             {...props}
         />
         {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {!error && helpText && <p className="mt-1 text-sm text-[var(--color-text-muted)]">{helpText}</p>}
     </div>
 ));
 
@@ -123,9 +147,9 @@ export const Spinner: React.FC<{ size?: 'sm' | 'md' | 'lg'; className?: string }
 export const StatCard: React.FC<{ title: string; value: string | number; change?: string; changeType?: 'increase' | 'decrease' }> = ({ title, value, change, changeType }) => (
     <Card>
         <CardContent>
-            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{title}</h3>
+            <h3 className="text-sm font-medium text-[var(--color-text-secondary)] truncate">{title}</h3>
             <div className="mt-1 flex items-baseline justify-between">
-                <p className="text-2xl font-semibold text-gray-900 dark:text-white">{value}</p>
+                <p className="text-2xl font-semibold text-[var(--color-text-primary)]">{value}</p>
                 {change && (
                     <span className={`flex items-baseline text-sm font-semibold ${changeType === 'increase' ? 'text-green-600' : 'text-red-600'}`}>
                         {change}
@@ -138,7 +162,7 @@ export const StatCard: React.FC<{ title: string; value: string | number; change?
 
 // --- Skeleton Loader ---
 export const Skeleton: React.FC<{ className?: string }> = ({ className }) => (
-    <div className={`animate-pulse bg-gray-300 dark:bg-gray-700 rounded ${className}`} />
+    <div className={`animate-pulse bg-[var(--color-border)] rounded ${className}`} />
 );
 
 // --- Modal ---
@@ -147,10 +171,10 @@ export const Modal: React.FC<{ isOpen: boolean; onClose: () => void; title: stri
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center" onClick={onClose}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg m-4" onClick={e => e.stopPropagation()}>
-                <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
+            <div className="bg-[var(--color-card-bg)] rounded-lg shadow-xl w-full max-w-lg m-4" onClick={e => e.stopPropagation()}>
+                <div className="flex justify-between items-center p-4 border-b border-[var(--color-border)]">
                     <h3 className="text-lg font-semibold">{title}</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                    <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>

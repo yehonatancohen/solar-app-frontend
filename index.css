@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-text-primary: #111827; /* gray-900 */
+  --color-text-secondary: #6b7280; /* gray-500 */
+  --color-text-muted: #9ca3af; /* gray-400 */
+  --color-bg-primary: #f9fafb; /* gray-50 */
+  --color-bg-secondary: #f3f4f6; /* gray-100 */
+  --color-card-bg: #ffffff; /* white */
+  --color-input-bg: #ffffff; /* white */
+  --color-border: #e5e7eb; /* gray-200 */
+  --color-border-input: #d1d5db; /* gray-300 */
+  --color-primary: #3b82f6; /* primary-500 */
+  --color-primary-hover: #2563eb; /* primary-600 */
+  --color-primary-text: #ffffff; /* white */
+  --color-primary-subtle-bg: #eff6ff; /* primary-50 */
+  --color-primary-subtle-text: #1d4ed8; /* primary-700 */
+}
+
+html.dark {
+  --color-text-primary: #f9fafb; /* gray-50 */
+  --color-text-secondary: #9ca3af; /* gray-400 */
+  --color-text-muted: #6b7280; /* gray-500 */
+  --color-bg-primary: #111827; /* gray-900 */
+  --color-bg-secondary: #030712; /* gray-950 */
+  --color-card-bg: #1f2937; /* gray-800 */
+  --color-input-bg: #374151; /* gray-700 */
+  --color-border: #374151; /* gray-700 */
+  --color-border-input: #4b5563; /* gray-600 */
+  --color-primary-subtle-bg: rgba(59, 130, 246, 0.15);
+  --color-primary-subtle-text: #93c5fd; /* primary-300 */
+}
+
+body {
+  background-color: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+}
+
+*,
+*::before,
+*::after {
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}

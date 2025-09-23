@@ -36,11 +36,11 @@ const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
     }, []);
 
     return (
-        <header className="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-30">
+        <header className="bg-[var(--color-card-bg)] shadow-sm sticky top-0 z-30">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center">
-                        <button onClick={onMenuClick} className="lg:hidden mr-4 p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button onClick={onMenuClick} className="lg:hidden mr-4 p-2 rounded-md text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)]">
                            <MenuIcon/>
                         </button>
                         <Link to="/" className="flex-shrink-0 flex items-center">
@@ -49,31 +49,31 @@ const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
                         </Link>
                     </div>
                     <div className="flex items-center space-x-4">
-                        <button onClick={toggleTheme} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
+                        <button onClick={toggleTheme} className="p-2 rounded-full text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)]">
                             {theme === 'light' ? <MoonIcon className="h-6 w-6" /> : <SunIcon className="h-6 w-6" />}
                         </button>
                         
                         <div className="relative" ref={notificationsRef}>
-                            <button onClick={() => setNotificationsOpen(prev => !prev)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 relative">
+                            <button onClick={() => setNotificationsOpen(prev => !prev)} className="p-2 rounded-full text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] relative">
                                 <BellIcon className="h-6 w-6" />
-                                <span className="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-white dark:ring-gray-800"></span>
+                                <span className="absolute top-1 right-1 block h-2.5 w-2.5 rounded-full bg-red-500 ring-2 ring-[var(--color-card-bg)]"></span>
                             </button>
                             {isNotificationsOpen && (
-                                <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    <div className="p-4 border-b dark:border-gray-600">
-                                        <h3 className="font-semibold text-gray-800 dark:text-gray-100">Notifications</h3>
+                                <div className="origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-lg bg-[var(--color-card-bg)] ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <div className="p-4 border-b border-[var(--color-border)]">
+                                        <h3 className="font-semibold text-[var(--color-text-primary)]">Notifications</h3>
                                     </div>
-                                    <ul className="py-1 divide-y divide-gray-100 dark:divide-gray-600">
-                                        <li className="p-4 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <ul className="py-1 divide-y divide-[var(--color-border)]">
+                                        <li className="p-4 hover:bg-[var(--color-bg-secondary)]">
                                             <p className="text-sm font-medium">Calculation complete for 'Downtown Rooftop'</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">5 minutes ago</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1">5 minutes ago</p>
                                         </li>
-                                        <li className="p-4 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                        <li className="p-4 hover:bg-[var(--color-bg-secondary)]">
                                             <p className="text-sm">Quote #Q2023-015 for 'Suburban Residence' expires in 3 days.</p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">1 hour ago</p>
+                                            <p className="text-xs text-[var(--color-text-muted)] mt-1">1 hour ago</p>
                                         </li>
                                     </ul>
-                                    <div className="p-2 border-t dark:border-gray-600">
+                                    <div className="p-2 border-t border-[var(--color-border)]">
                                         <Link to="/notifications" className="block text-center text-sm font-medium text-primary-600 hover:text-primary-500">
                                             View all notifications
                                         </Link>
@@ -83,18 +83,34 @@ const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
                         </div>
 
                         <div className="relative" ref={userMenuRef}>
-                            <button onClick={() => setUserMenuOpen(prev => !prev)} className="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <UserCircleIcon className="h-6 w-6" />
+                            <button onClick={() => setUserMenuOpen(prev => !prev)} className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:ring-offset-[var(--color-card-bg)]">
+                               <div className="h-8 w-8 rounded-full bg-[var(--color-bg-secondary)] flex items-center justify-center">
+                                    {user?.name ? (
+                                        <span className="font-semibold text-[var(--color-text-secondary)]">{user.name.charAt(0)}</span>
+                                    ) : (
+                                        <UserCircleIcon className="h-6 w-6 text-[var(--color-text-secondary)]" />
+                                    )}
+                                </div>
                             </button>
                             {isUserMenuOpen && (
-                                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                    <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b dark:border-gray-600">
-                                        <p className="font-semibold">{user?.name}</p>
-                                        <p className="truncate text-gray-500 dark:text-gray-400">{user?.email}</p>
+                                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-[var(--color-card-bg)] ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                    <Link to="/profile" className="block px-4 py-3 hover:bg-[var(--color-bg-secondary)]" onClick={() => setUserMenuOpen(false)}>
+                                        <div className="flex items-center">
+                                            <div className="flex-shrink-0 h-10 w-10 rounded-full bg-[var(--color-primary-subtle-bg)] flex items-center justify-center">
+                                                <span className="font-semibold text-lg text-[var(--color-primary-subtle-text)]">{user?.name?.charAt(0)}</span>
+                                            </div>
+                                            <div className="ml-3">
+                                                <p className="text-sm font-semibold text-[var(--color-text-primary)]">{user?.name}</p>
+                                                <p className="text-xs text-[var(--color-text-muted)] truncate">{user?.email}</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                    <div className="py-1 border-t border-[var(--color-border)]">
+                                        <button onClick={() => { logout(); setUserMenuOpen(false); }} className="flex items-center w-full text-left px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                                            Logout
+                                        </button>
                                     </div>
-                                    <button onClick={logout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
-                                        Logout
-                                    </button>
                                 </div>
                             )}
                         </div>
@@ -107,12 +123,11 @@ const Header: React.FC<{ onMenuClick: () => void }> = ({ onMenuClick }) => {
 
 // --- Sidebar ---
 const NavItem: React.FC<{ to: string; icon: React.ReactNode; children: React.ReactNode }> = ({ to, icon, children }) => {
-    // This is the correct v6+ syntax for active NavLinks
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-      `flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-colors duration-200 ${
+      `flex items-center px-4 py-2.5 text-sm font-medium rounded-lg ${
         isActive
-          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900/50 dark:text-primary-300'
-          : 'text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700'
+          ? 'bg-[var(--color-primary-subtle-bg)] text-[var(--color-primary-subtle-text)]'
+          : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-primary)]'
       }`;
   
     return (
@@ -130,8 +145,8 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, o
             <div className={`fixed inset-0 bg-black bg-opacity-30 z-30 lg:hidden transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={onClose}></div>
 
             {/* Sidebar */}
-            <aside className={`fixed top-0 left-0 w-64 h-full bg-white dark:bg-gray-800 border-r dark:border-gray-700 z-40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                <div className="p-4 h-16 flex items-center border-b dark:border-gray-700">
+            <aside className={`fixed top-0 left-0 w-64 h-full bg-[var(--color-card-bg)] border-r border-[var(--color-border)] z-40 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                <div className="p-4 h-16 flex items-center border-b border-[var(--color-border)]">
                     {/* Header space */}
                 </div>
                 <nav className="p-4 space-y-2">
@@ -150,7 +165,7 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, o
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="min-h-screen bg-[var(--color-bg-secondary)]">
             <div className="lg:pl-64">
                 <Header onMenuClick={() => setSidebarOpen(true)} />
                 <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
